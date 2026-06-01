@@ -5,7 +5,7 @@ pipeline {
         }
     }
     tools {
-        maven 'maven-3.9'
+        maven 'Maven-3.9'
     }
     stages {
         stage('Packaging') {

@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        node {
-            label 'dockerhost-build-server'
-        }
-    }
+    agent any
     tools {
         maven 'Maven-3.9'
     }
@@ -22,7 +18,7 @@ pipeline {
         }
         stage('cleanup') {
             steps {
-                sh 'docker system prune -a --volumes --force --filter "label=devops-web-project-server"'
+                sh 'docker system prune -a --volumes --force --filter "label=devops-web-project-server" || true'
             }
         }
         stage('build image') {

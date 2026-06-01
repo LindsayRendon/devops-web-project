@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        node {
+            label 'dockerhost-build-server'
+        }
+    }
     tools {
         maven 'Maven-3.9'
     }
@@ -18,17 +22,17 @@ pipeline {
         }
         stage('cleanup') {
             steps {
-                sh '/usr/bin/docker system prune -a --volumes --force --filter "label=devops-web-project-server" || true'
+                sh 'docker system prune -a --volumes --force --filter "label=devops-web-project-server" || true'
             }
         }
         stage('build image') {
             steps {
-                sh '/usr/bin/docker build -t lindsaysamantha/devops-web-project:v1 --label devops-web-project-server .'
+                sh 'docker build -t lindsaysamantha/devops-web-project:v1 --label devops-web-project-server .'
             }
         }
         stage('run container') {
             steps {
-                sh '/usr/bin/docker run -d --name devops-web-project-server --label devops-web-project-server -p 8081:8080 lindsaysamantha/devops-web-project:v1'
+                sh 'docker run -d --name devops-web-project-server --label devops-web-project-server -p 8081:8080 lindsaysamantha/devops-web-project:v1'
             }
         }
     }
